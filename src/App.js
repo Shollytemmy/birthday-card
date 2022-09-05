@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import {birthDatas} from './birthData'
+import BirthRemainder from './BirthRemainder/BirthRemainder'
+import React, {useState} from 'react';
+import './index.css';
 
 function App() {
+  const[clear, setClear] = useState(birthDatas)
+
+  const handleDelete = (id) =>{
+    let newData = clear.filter((birthday) => birthday.id !== id );
+    setClear(newData)
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <p className='bith-count'>{clear.length} {clear.length > 1 ? 'bithdays' : 'birthday'} today </p>
+      {clear.map((birthdata) => {
+        return (
+          <div key={birthdata.id}>
+            <BirthRemainder {...birthdata} />{" "}
+            <button
+              onClick={() => handleDelete(birthdata.id)}
+              className="data-btn"
+            >
+              remove
+            </button>
+          </div>
+        );
+      })}
+
+      <span className='btn-span'>
+        <button onClick={() => setClear([])} className="clear-btn">
+          Clear All
+        </button>
+      </span>
     </div>
   );
 }
